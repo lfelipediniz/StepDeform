@@ -299,9 +299,10 @@ button:disabled {
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 12px 8px;
+  /* o código quebra a linha para caber; a rolagem só aparece em último caso */
   overflow-x: auto;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 11.5px;
+  font-size: clamp(10px, 1.05vw, 11.5px);
   line-height: 1.5;
 }
 .linha {
@@ -309,7 +310,7 @@ button:disabled {
   gap: 10px;
   padding: 1px 8px;
   border-left: 2px solid transparent;
-  white-space: pre;
+  align-items: flex-start; /* mantém o número no topo quando a linha quebra */
   color: #8d83b8;
 }
 .linha .num {
@@ -318,6 +319,12 @@ button:disabled {
   text-align: right;
   user-select: none;
   flex-shrink: 0;
+}
+.linha .txt {
+  flex: 1;
+  min-width: 0; /* permite que o texto encolha e quebre dentro do flex */
+  white-space: pre-wrap; /* preserva a indentação E quebra linhas longas */
+  overflow-wrap: anywhere;
 }
 .linha.destaque {
   background: rgba(124, 92, 255, 0.16);
