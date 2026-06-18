@@ -1,0 +1,18 @@
+# dependências
+node_modules
+dist
+dist-ssr
+
+# python (venv já existente no repo)
+venv/
+__pycache__/
+*.pyc
+
+# logs / sistema
+*.log
+.DS_Store
+
+# editores
+.vscode/*
+!.vscode/settings.json
+.idea
