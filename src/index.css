@@ -312,6 +312,8 @@ button:disabled {
   border-left: 2px solid transparent;
   align-items: flex-start; /* mantém o número no topo quando a linha quebra */
   color: #8d83b8;
+  opacity: 0.55; /* linhas inativas ficam discretas... */
+  transition: opacity 0.2s ease;
 }
 .linha .num {
   color: #4d4570;
@@ -329,10 +331,41 @@ button:disabled {
 .linha.destaque {
   background: rgba(124, 92, 255, 0.16);
   border-left-color: var(--gold);
-  color: #fff;
+  opacity: 1; /* ...e a linha em execução fica em destaque total */
 }
 .linha.destaque .num {
   color: var(--gold);
+}
+
+/* ---- realce de sintaxe (Python) ---- */
+.tok-keyword {
+  color: #ff79c6;
+  font-weight: 600;
+}
+.tok-function {
+  color: #8be9fd;
+}
+.tok-builtin {
+  color: #bd93f9;
+}
+.tok-number {
+  color: #ffb86c;
+}
+.tok-string {
+  color: #f1fa8c;
+}
+.tok-comment {
+  color: #6f7aa8;
+  font-style: italic;
+}
+.tok-operator {
+  color: #ff92d8;
+}
+.tok-punct {
+  color: #c8c2e8;
+}
+.tok-name {
+  color: #f3f0ff;
 }
 
 .referencia {

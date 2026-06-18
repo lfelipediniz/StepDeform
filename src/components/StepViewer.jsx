@@ -1,6 +1,31 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { STEPS, CODIGO } from '../data/steps.js'
 import { applyFisheye, distanceOverlay, angleOverlay } from '../lib/fisheye.js'
+import { tokenizePython } from '../lib/highlight.js'
+
+// Tokeniza o código UMA vez (ele nunca muda) -> realce de sintaxe pré-pronto.
+const CODIGO_TOK = CODIGO.map(tokenizePython)
+
+// Painel de código com realce. É memoizado e só depende das linhas ativas,
+// então NÃO re-renderiza durante a animação da força (melhor desempenho).
+const CodePanel = memo(function CodePanel({ ativas }) {
+  return (
+    <pre className="codigo">
+      {CODIGO_TOK.map((toks, i) => (
+        <div key={i} className={'linha' + (ativas.includes(i) ? ' destaque' : '')}>
+          <span className="num">{i + 1}</span>
+          <span className="txt">
+            {toks.map((tk, k) => (
+              <span key={k} className={'tok-' + tk.type}>
+                {tk.text}
+              </span>
+            ))}
+          </span>
+        </div>
+      ))}
+    </pre>
+  )
+})
 
 export default function StepViewer({ src, geom, onReiniciar }) {
   const canvasRef = useRef(null)
@@ -176,17 +201,7 @@ export default function StepViewer({ src, geom, onReiniciar }) {
         <h2 className="passo-titulo">{step.titulo}</h2>
         <p className="passo-texto">{step.explicacao}</p>
 
-        <pre className="codigo">
-          {CODIGO.map((linha, i) => (
-            <div
-              key={i}
-              className={'linha' + (step.linhas.includes(i) ? ' destaque' : '')}
-            >
-              <span className="num">{i + 1}</span>
-              <span className="txt">{linha || ' '}</span>
-            </div>
-          ))}
-        </pre>
+        <CodePanel ativas={step.linhas} />
 
         <div className="referencia">
           <span>foto original</span>
